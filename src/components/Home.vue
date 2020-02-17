@@ -11,7 +11,7 @@
     <el-container>
       <!-- 侧栏-->
       <el-aside :width="isCollapse?'64px':'200px'">
-        <div class="toggle-button" @click="toggleCollapse">|||</div>
+        <div class="toggle-button" @click="toggleCollapse"><i :class="toggleIcon"></i></div>
         <!-- 侧边菜单-->
         <el-menu background-color="#333744" text-color="#fff" active-text-color="#409EFF" unique-opened
                  :collapse="isCollapse" :collapse-transition="false" :router="true"
@@ -56,6 +56,7 @@
         //是否折叠
         isCollapse: false,
         activePath: '',
+        toggleIcon:'el-icon-caret-left'
       };
     },
     methods: {
@@ -72,6 +73,11 @@
       //切换菜单折叠
       toggleCollapse() {
         this.isCollapse = !this.isCollapse;
+        if(this.isCollapse){
+          this.toggleIcon = 'el-icon-caret-right';
+        }else {
+          this.toggleIcon = 'el-icon-caret-left';
+        }
       },
       saveNavState(activePath) {
         window.sessionStorage.setItem('activePath', activePath);

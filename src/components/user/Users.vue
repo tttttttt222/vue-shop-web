@@ -86,7 +86,7 @@
         this.getUserList();
       },
       async userStateChanged(userinfo) {
-        const {data: res} = await this.$http.post(`users/${userinfo.id}/state/${userinfo.mg_state}`)
+        const {data: res} = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
         if (res.meta.status !== 200) {
           userinfo.mg_state = !userinfo.mg_state;
           return this.$message.error('更新用户状态失败');
