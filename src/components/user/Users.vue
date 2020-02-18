@@ -50,7 +50,7 @@
     </el-card>
 
     <!--添加用户-->
-    <el-dialog title="添加用户" :visible.sync="addDialogVisible" width="50%">
+    <el-dialog title="添加用户" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px">
         <el-form-item label="用户名" prop="username">
           <el-input v-model="addForm.username"></el-input>
@@ -67,7 +67,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="addUser">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -77,6 +77,22 @@
   export default {
     name: "Users.vue",
     data() {
+      //验证email
+      var checkEmail = (rule, value, cb) => {
+        const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
+        if (regEmail.test(value)) {
+          return cb();
+        }
+        cb(new Error('请输入合法邮箱'));
+      }
+      //验证手机号
+      var checkMobile = (rule, value, cb) => {
+        const regMobile = /^(0|86|17951)?(13[0-9]|15[0123456789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
+        if (regMobile.test(value)) {
+          return cb();
+        }
+        cb(new Error('请输入合法邮箱'));
+      }
       return {
         //查询参数
         queryInfo: {
@@ -88,18 +104,20 @@
         total: 0,
         addDialogVisible: false,
         addForm: {
-          username:'',
-          password:'',
-          email:'',
-          mobile:''
+          username: '',
+          password: '',
+          email: '',
+          mobile: ''
         },
         addFormRules: {
           username: [{required: true, message: '请输入用户名', trigger: 'blur'},
             {min: 3, max: 10, message: '用户名长度3-10字符之间', trigger: 'blur'}],
           password: [{required: true, message: '请输入密码', trigger: 'blur'},
             {min: 6, max: 15, message: '密码长度3-10字符之间', trigger: 'blur'}],
-          email: [{required: true, message: '请输入邮箱', trigger: 'blur'}],
-          mobile: [{required: true, message: '请输入手机号', trigger: 'blur'}]
+          email: [{required: true, message: '请输入邮箱', trigger: 'blur'},
+            {validator: checkEmail, trigger: 'blur'}],
+          mobile: [{required: true, message: '请输入手机号', trigger: 'blur'},
+            {validator: checkMobile, trigger: 'blur'}]
         },
       }
     },
@@ -129,6 +147,14 @@
           return this.$message.error('更新用户状态失败');
         }
         this.$message.success('更新用户状态成功');
+      },
+      addDialogClosed() {
+        this.$refs.addFormRef.resetFields();
+      },
+      addUser() {
+        this.$refs.addFormRef.validate(valid => {
+          if (!valid) return;
+        })
       }
     }
   }
