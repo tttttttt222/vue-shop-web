@@ -33,7 +33,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
+            <el-button type="primary" icon="el-icon-edit" size="mini" @click="showEditDialog(scope.row.id)"></el-button>
             <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
             <el-tooltip effect="dark" content="分配角色" placement="top-start" :enterable="false">
               <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
@@ -70,6 +70,18 @@
         <el-button type="primary" @click="addUser">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 修改用户-->
+    <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
+      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
+
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editUser">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -119,6 +131,8 @@
           mobile: [{required: true, message: '请输入手机号', trigger: 'blur'},
             {validator: checkMobile, trigger: 'blur'}]
         },
+        editDialogVisible: false,
+        editForm:{}
       }
     },
     created() {
@@ -152,9 +166,32 @@
         this.$refs.addFormRef.resetFields();
       },
       addUser() {
-        this.$refs.addFormRef.validate(valid => {
+        this.$refs.addFormRef.validate(async valid => {
           if (!valid) return;
+          //添加用户的网络请求
+          const {data: res} = await this.$http.post('users', this.addForm);
+          if (res.meta.status != 200) {
+            return this.$message.error('添加用户失效!');
+          }
+          this.$message.success('添加用户成功!');
+          //隐藏添加用户的对话框
+          this.addDialogVisible = false;
+          this.getUserList();
         })
+      },
+      async showEditDialog(id) {
+        const {data: res} = await this.$http.get('users/' + id);
+        if(res.meta.status !==200){
+          return this.$message.error('查询用户信息失效!');
+        }
+        this.editForm = res.data
+        this.editDialogVisible = true;
+      },
+      editDialogClosed() {
+        this.$refs.editFormRef.resetFields();
+      },
+      editUser() {
+        this.editDialogVisible = true;
       }
     }
   }
