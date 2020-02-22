@@ -112,7 +112,7 @@
         if (regMobile.test(value)) {
           return cb();
         }
-        cb(new Error('请输入合法邮箱'));
+        cb(new Error('请输入合法手机号'));
       }
       return {
         //查询参数
