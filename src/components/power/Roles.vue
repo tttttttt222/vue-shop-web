@@ -57,7 +57,7 @@
             </el-button>
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeRoleById(scope.row.id)">删除
             </el-button>
-            <el-button type="warning" icon="el-icon-setting" size="mini" @click="showSetRightDialog">分配权限</el-button>
+            <el-button type="warning" icon="el-icon-setting" size="mini" @click="showSetRightDialog(scope.row)">分配权限</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -97,8 +97,9 @@
     </el-dialog>
 
     <!-- 分配权限-->
-    <el-dialog title="修改角色" :visible.sync="setRightDialogVisible" width="50%" @close="setRightDialogClosed">
-      <span></span>
+    <el-dialog title="修改角色" :visible.sync="setRightDialogVisible" width="50%">
+      <el-tree :data="rightsList" :props="treeProps" show-checkbox node-key="id" default-expand-all
+               :default-checked-keys="defKeys"></el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="setRightDialogVisible = false">确 定</el-button>
@@ -131,6 +132,12 @@
         },
         setRightDialogVisible: false,
         rightsList: [],
+        treeProps: {
+          label: 'authName',
+          children: 'children',
+        },
+        //默认选中的id
+        defKeys: [],
       }
     },
     created() {
@@ -222,20 +229,24 @@
         this.$message.success('删除角色成功!');
         this.getRolesList();
       },
-      async showSetRightDialog() {
+      async showSetRightDialog(role) {
         //获取权限
         const {data: res} = await this.$http.get('rights/tree');
         if (res.meta.status !== 200) {
           return this.$message.error('删除权限信息失败');
         }
         this.rightsList = res.data;
-        console.log(this.rightsList);
+        // console.log(this.rightsList);
+        this.getLeafKeys(role, this.defKeys);
         this.setRightDialogVisible = true;
       },
-      setRightDialogClosed() {
-
-      }
-
+      //获取树形结构所需的id defKeys
+      getLeafKeys(node, arr) {
+        if (!node.children || node.children.length == 0) {
+          return arr.push(node.id);
+        }
+        node.children.forEach(item => this.getLeafKeys(item, arr));
+      },
     }
   }
 </script>
