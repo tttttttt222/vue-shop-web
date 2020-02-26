@@ -57,7 +57,8 @@
             </el-button>
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeRoleById(scope.row.id)">删除
             </el-button>
-            <el-button type="warning" icon="el-icon-setting" size="mini" @click="showSetRightDialog(scope.row)">分配权限</el-button>
+            <el-button type="warning" icon="el-icon-setting" size="mini" @click="showSetRightDialog(scope.row)">分配权限
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -97,7 +98,7 @@
     </el-dialog>
 
     <!-- 分配权限-->
-    <el-dialog title="修改角色" :visible.sync="setRightDialogVisible" width="50%">
+    <el-dialog title="修改角色" :visible.sync="setRightDialogVisible" width="50%" @close="setRightDialogClosed()">
       <el-tree :data="rightsList" :props="treeProps" show-checkbox node-key="id" default-expand-all
                :default-checked-keys="defKeys"></el-tree>
       <span slot="footer" class="dialog-footer">
@@ -233,11 +234,12 @@
         //获取权限
         const {data: res} = await this.$http.get('rights/tree');
         if (res.meta.status !== 200) {
-          return this.$message.error('删除权限信息失败');
+          return this.$message.error('获取权限信息失败');
         }
         this.rightsList = res.data;
         // console.log(this.rightsList);
         this.getLeafKeys(role, this.defKeys);
+        console.log(this.defKeys);
         this.setRightDialogVisible = true;
       },
       //获取树形结构所需的id defKeys
@@ -247,6 +249,9 @@
         }
         node.children.forEach(item => this.getLeafKeys(item, arr));
       },
+      setRightDialogClosed() {
+        this.defKeys = [];
+      }
     }
   }
 </script>
