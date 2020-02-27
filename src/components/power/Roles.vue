@@ -244,7 +244,7 @@
       },
       //获取树形结构所需的id defKeys
       getLeafKeys(node, arr) {
-        if (!node.children || node.children.length == 0) {
+        if (!node.children) {
           return arr.push(node.id);
         }
         node.children.forEach(item => this.getLeafKeys(item, arr));
