@@ -97,10 +97,10 @@
       </span>
     </el-dialog>
 
-    <!-- 分配权限-->
+    <!-- 分配权限  :default-checked-keys="defKeys"-->
     <el-dialog title="修改角色" :visible.sync="setRightDialogVisible" width="50%" @close="setRightDialogClosed()">
       <el-tree :data="rightsList" :props="treeProps" show-checkbox node-key="id" default-expand-all
-               :default-checked-keys="defKeys" ref="treeRef"></el-tree>
+               ref="treeRef"></el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="allotRights()">确 定</el-button>
@@ -139,6 +139,7 @@
         },
         //默认选中的id
         defKeys: [],
+        defHalfKeys: [],
         //分配权限的id
         roleId: ''
       }
@@ -240,25 +241,47 @@
           return this.$message.error('获取权限信息失败');
         }
         this.rightsList = res.data;
-        // console.log(this.rightsList);
-        this.getLeafKeys(role, this.defKeys);
-        console.log(this.defKeys);
+        this.getLeafKeys(role, this.defKeys, this.defHalfKeys);
+        // console.log(this.defKeys);
+        // console.log(this.defHalfKeys);
         this.setRightDialogVisible = true;
+        this.setTreeListVals();
+
       },
       //获取树形结构所需的id defKeys
-      getLeafKeys(node, arr) {
-        if (!node.children) {
+      getLeafKeys(node, arr, arrHalf) {
+        // if (!node.children ) {
+        if (!node.children && node.level == 3) {
           return arr.push(node.id);
+        } else if (!node.children && node.level != 3) {
+          return arrHalf.push(node.id);
+        } else if (node.children && node.level) {
+          arrHalf.push(node.id);
         }
-        node.children.forEach(item => this.getLeafKeys(item, arr));
+        node.children.forEach(item => this.getLeafKeys(item, arr, arrHalf));
+      },
+      setTreeListVals() {
+        const treeKeys = [...this.defHalfKeys, ...this.defKeys];
+        var that = this;
+        this.$nextTick(() => {
+          treeKeys.forEach((i, n) => {
+            var node = that.$refs.treeRef.getNode(i);
+            if (node.isLeaf) {
+              that.$refs.treeRef.setChecked(node, true,false);
+            }
+            that.$refs.treeRef.setChecked(node, true,false);
+          });
+        })
       },
       setRightDialogClosed() {
         this.defKeys = [];
+        this.defHalfKeys = [];
       },
       //点击为角色分配权限
       async allotRights() {
         const keys = [...this.$refs.treeRef.getCheckedKeys(),
           ...this.$refs.treeRef.getHalfCheckedKeys()];
+        console.log(keys);
         const idStr = keys.join(',');
         const {data: res} = await this.$http.post(`roles/${this.roleId}/rights`, {rids: idStr});
 
