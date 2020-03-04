@@ -12,9 +12,9 @@
           <el-button type="primary">添加分类</el-button>
         </el-col>
       </el-row>
-      <el-table>
+      <tree-table :data="catelist" :columns="columns" :selection-type="false" :expand-type="false" show-index index-text="#" border :show-row-hover="false">
 
-      </el-table>
+      </tree-table>
       <!--分页-->
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                      :current-page="queryInfo.pagenum"
@@ -37,7 +37,8 @@
           pagesize: 5
         },
         catelist: [],
-        total:0,
+        total: 0,
+        columns: [{label:'分类名称',prop:'cat_name'}]
       }
     },
     created() {
@@ -50,13 +51,14 @@
         if (res.meta.status !== 200) {
           return this.$message.error('获取列表失败');
         }
+        console.log(res);
         this.catelist = res.data;
         this.total = res.total;
       },
-      handleSizeChange(){
+      handleSizeChange() {
 
       },
-      handleCurrentChange(){
+      handleCurrentChange() {
 
       }
     }
