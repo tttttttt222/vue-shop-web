@@ -47,12 +47,18 @@
       //获取商品列表
       async getCateList() {
         const {data: res} = await this.$http.get('categories', {params: this.queryInfo});
-        if (res.meta !== 200) {
+        if (res.meta.status !== 200) {
           return this.$message.error('获取列表失败');
         }
         this.catelist = res.data;
         this.total = res.total;
       },
+      handleSizeChange(){
+
+      },
+      handleCurrentChange(){
+
+      }
     }
   }
 </script>
