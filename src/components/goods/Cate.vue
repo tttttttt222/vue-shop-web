@@ -12,13 +12,13 @@
           <el-button type="primary">添加分类</el-button>
         </el-col>
       </el-row>
-      <tree-table :data="catelist" :columns="columns" :selection-type="false" :expand-type="false" show-index index-text="#" border :show-row-hover="false">
+      <tree-table :data="catelist" :columns="columns" :selection-type="false" :expand-type="false" show-index index-text="#" border :show-row-hover="false" stripe>
 
       </tree-table>
       <!--分页-->
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                      :current-page="queryInfo.pagenum"
-                     :page-sizes="[1,2, 10, 30,50]" :page-size="queryInfo.pagesize"
+                     :page-sizes="[1,5, 10, 30,50]" :page-size="queryInfo.pagesize"
                      layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </el-card>
@@ -38,7 +38,11 @@
         },
         catelist: [],
         total: 0,
-        columns: [{label:'分类名称',prop:'cat_name'}]
+        columns: [{label:'分类名称',prop:'cat_name'},
+          {label: '是否有效'},
+          {label: '排序'},
+          {label: '操作'},
+        ]
       }
     },
     created() {
@@ -52,14 +56,16 @@
           return this.$message.error('获取列表失败');
         }
         console.log(res);
-        this.catelist = res.data;
-        this.total = res.total;
+        this.catelist = res.data.list;
+        this.total = res.data.total;
       },
-      handleSizeChange() {
-
+      handleSizeChange(newSize) {
+        this.queryInfo.pagesize = newSize;
+        this.getCateList();
       },
-      handleCurrentChange() {
-
+      handleCurrentChange(newPage) {
+        this.queryInfo.pagenum = newPage;
+        this.getCateList();
       }
     }
   }
