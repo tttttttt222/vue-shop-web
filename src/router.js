@@ -5,6 +5,7 @@ import Home from "./components/Home.vue";
 import Welcome from "./components/welcome.vue";
 import Users from "./components/user/Users.vue";
 import Rightes from "./components/power/Rightes.vue";
+import RightesDeploy from "./components/power/RightesDeploy.vue";
 import Roles from "./components/power/Roles.vue";
 import Cate from "./components/goods/Cate.vue";
 
@@ -19,6 +20,7 @@ const router = new Router({
         {path: '/welcome', component: Welcome},
         {path: '/users', component: Users},
         {path: '/rights', component: Rightes},
+        {path: '/rightesDeploy', component: RightesDeploy},
         {path: '/roles', component: Roles},
         {path: '/params', component: Welcome},
         {path: '/categories', component: Cate},
