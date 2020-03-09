@@ -133,12 +133,15 @@
       parentCateChange() {
         // console.log(this.selectKeys)
         this.addCateForm.cat_pid = this.selectKeys[this.selectKeys.length - 1];
+        this.addCateForm.cat_level = 1;
       },
       async saveCateList(){
         const {data: res} = await this.$http.post('categories', this.addCateForm);
         if (res.meta.status !== 200) {
           return this.$message.error('添加分类失败');
         }
+        this.getCateList();
+        this.addCateDialogVisible = false;
       }
     }
   }
