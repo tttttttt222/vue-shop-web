@@ -39,7 +39,7 @@
     </el-card>
 
     <!--添加权限-->
-    <el-dialog title="添加分类" :visible.sync="addCateDialogVisible" width="50%">
+    <el-dialog title="添加分类" :visible.sync="addCateDialogVisible" width="50%" @close="addCateDialogClose()">
       <el-form :model="addCateForm" :rules="addCateFormRules" ref="addCateFormRef" label-width="100px">
         <el-form-item label="分类名称" prop="cat_name">
           <el-input v-model="addCateForm.cat_name"></el-input>
@@ -132,16 +132,32 @@
       },
       parentCateChange() {
         // console.log(this.selectKeys)
-        this.addCateForm.cat_pid = this.selectKeys[this.selectKeys.length - 1];
-        this.addCateForm.cat_level = 1;
-      },
-      async saveCateList(){
-        const {data: res} = await this.$http.post('categories', this.addCateForm);
-        if (res.meta.status !== 200) {
-          return this.$message.error('添加分类失败');
+        if (this.selectKeys.length > 0) {
+          this.addCateForm.cat_pid = this.selectKeys[this.selectKeys.length - 1];
+          this.addCateForm.cat_level = this.selectKeys.length;
+          return;
+        } else {
+          this.addCateForm.cat_pid = 0;
+          this.addCateForm.cat_level = 0;
         }
-        this.getCateList();
-        this.addCateDialogVisible = false;
+      },
+      async saveCateList() {
+        this.$refs.addCateFormRef.validate(async valid => {
+          if (!valid) return;
+          const {data: res} = await this.$http.post('categories', this.addCateForm);
+          if (res.meta.status !== 200) {
+            return this.$message.error('添加分类失败');
+          }
+          this.$message.success('添加分类成功');
+          this.getCateList();
+          this.addCateDialogVisible = false;
+        })
+      },
+      addCateDialogClose() {
+        this.$refs.addCateFormRef.resetFields();
+        this.selectKeys = [];
+        this.addCateForm.cat_pid = 0;
+        this.addCateForm.cat_level = 0;
       }
     }
   }
