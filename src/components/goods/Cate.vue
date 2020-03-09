@@ -54,7 +54,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="addCateDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="">确 定</el-button>
+        <el-button type="primary" @click="saveCateList()">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -131,7 +131,14 @@
         this.parentCateList = res.data.list;
       },
       parentCateChange() {
-        console.log(this.selectKeys)
+        // console.log(this.selectKeys)
+        this.addCateForm.cat_pid = this.selectKeys[this.selectKeys.length - 1];
+      },
+      async saveCateList(){
+        const {data: res} = await this.$http.post('categories', this.addCateForm);
+        if (res.meta.status !== 200) {
+          return this.$message.error('添加分类失败');
+        }
       }
     }
   }
