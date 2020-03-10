@@ -107,7 +107,7 @@
         if (res.meta.status !== 200) {
           return this.$message.error('获取列表失败');
         }
-        console.log(res);
+        // console.log(res);
         this.catelist = res.data.list;
         this.total = res.data.total;
       },
