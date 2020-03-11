@@ -51,7 +51,8 @@
           '2': 'iconfont icon-tijikongjian',
           '3': 'iconfont icon-shangpin',
           '4': 'iconfont icon-danju',
-          '5': 'iconfont icon-baobiao'
+          '5': 'iconfont icon-baobiao',
+          '39': 'el-icon-s-management',
         },
         //是否折叠
         isCollapse: false,

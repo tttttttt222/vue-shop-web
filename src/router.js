@@ -9,6 +9,7 @@ import RightesDeploy from "./components/power/RightesDeploy.vue";
 import Roles from "./components/power/Roles.vue";
 import Cate from "./components/goods/Cate.vue";
 import Params from "./components/goods/Params.vue";
+import HistoryBrief from "./components/history/HistoryBrief.vue";
 
 
 Vue.use(Router)
@@ -27,6 +28,7 @@ const router = new Router({
         {path: '/categories', component: Cate},
         {path: '/goods', component: Welcome},
         {path: '/orders', component: Welcome},
+        {path: '/historyBrief', component: HistoryBrief},
       ]
     },
   ],

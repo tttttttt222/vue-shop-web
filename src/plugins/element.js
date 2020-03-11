@@ -29,7 +29,9 @@ import {
   Select,
   Option,
   Cascader,
-  Alert
+  Alert,
+  Timeline,
+  TimelineItem
 } from 'element-ui'
 
 
@@ -61,5 +63,7 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Cascader)
 Vue.use(Alert)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
