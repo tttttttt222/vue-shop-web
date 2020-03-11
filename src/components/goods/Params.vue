@@ -18,6 +18,17 @@
             @change="parentCateChange" clearable></el-cascader>
         </el-col>
       </el-row>
+
+      <el-tabs v-model="activeName" @tab-click="handleTabClick">
+        <el-tab-pane label="动态参数" name="many">
+          <el-button type="primary" size="mini" :disabled="isBtnDisable">添加参数</el-button>
+
+        </el-tab-pane>
+        <el-tab-pane label="静态属性" name="only">
+          <el-button type="primary" size="mini" :disabled="isBtnDisable">添加属性</el-button>
+
+        </el-tab-pane>
+      </el-tabs>
     </el-card>
   </div>
 </template>
@@ -35,6 +46,7 @@
           label: 'cat_name',
           value: 'cat_id',
         },
+        activeName: 'many',
       }
     },
     created() {
@@ -48,11 +60,34 @@
         }
         this.catelist = res.data.list;
       },
-      parentCateChange() {
+      async parentCateChange() {
         if (this.selectKeys.length !== 3) {
           this.selectKeys = [];
           return;
         }
+        const {data: res} = await this.$http.get(`categories/${this.cateId}/attributes`, {params: {sel: this.activeName}});
+        if (res.meta.status !== 200) {
+          return this.$message.error('获取分类属性失败');
+        }
+
+      },
+      handleTabClick() {
+
+      }
+    },
+    computed: {
+      isBtnDisable() {
+        if (this.selectKeys.length !== 3) {
+          return true;
+        }
+        return false;
+      },
+      //当前选中的三级分类id
+      cateId() {
+        if (this.selectKeys.length === 3) {
+          return this.selectKeys[2];
+        }
+        return null
       }
     }
   }
