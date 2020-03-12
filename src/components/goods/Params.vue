@@ -61,6 +61,12 @@
         this.catelist = res.data.list;
       },
       async parentCateChange() {
+        this.getParamsData();
+      },
+      handleTabClick() {
+        this.getParamsData();
+      },
+      async getParamsData() {
         if (this.selectKeys.length !== 3) {
           this.selectKeys = [];
           return;
@@ -69,10 +75,6 @@
         if (res.meta.status !== 200) {
           return this.$message.error('获取分类属性失败');
         }
-
-      },
-      handleTabClick() {
-
       }
     },
     computed: {
