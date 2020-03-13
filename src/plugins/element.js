@@ -33,7 +33,9 @@ import {
   Timeline,
   TimelineItem,
   Tabs,
-  TabPane
+  TabPane,
+  Collapse,
+  CollapseItem,
 } from 'element-ui'
 
 
@@ -69,5 +71,7 @@ Vue.use(Timeline)
 Vue.use(TimelineItem)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Collapse)
+Vue.use(CollapseItem)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

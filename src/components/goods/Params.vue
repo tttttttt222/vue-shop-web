@@ -47,6 +47,7 @@
           value: 'cat_id',
         },
         activeName: 'many',
+        paramslist:[],
       }
     },
     created() {
@@ -75,6 +76,8 @@
         if (res.meta.status !== 200) {
           return this.$message.error('获取分类属性失败');
         }
+        this.paramslist =res.data;
+        console.log(this.paramslist)
       }
     },
     computed: {
