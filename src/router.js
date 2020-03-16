@@ -11,6 +11,7 @@ import Cate from "./components/goods/Cate.vue";
 import Params from "./components/goods/Params.vue";
 import HistoryBrief from "./components/history/HistoryBrief.vue";
 import HistoryAdd from "./components/history/HistoryAdd.vue";
+import HistoryDetial from "./components/history/HistoryDetial.vue";
 
 
 Vue.use(Router)
@@ -19,7 +20,8 @@ const router = new Router({
   routes: [
     {path: '/', redirect: '/login'},
     {path: '/login', component: Login},
-    {path: '/home', component: Home, redirect: '/welcome', children: [
+    {
+      path: '/home', component: Home, redirect: '/welcome', children: [
         {path: '/welcome', component: Welcome},
         {path: '/users', component: Users},
         {path: '/rights', component: Rightes},
@@ -30,6 +32,7 @@ const router = new Router({
         {path: '/goods', component: Welcome},
         {path: '/orders', component: Welcome},
         {path: '/historyBrief', component: HistoryBrief},
+        {path: '/historyDetial/:id', component: HistoryDetial},
         {path: '/historyBriefAdd', component: HistoryAdd},
       ]
     },

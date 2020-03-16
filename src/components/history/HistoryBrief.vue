@@ -47,6 +47,7 @@
                 <el-collapse-item v-for="item2 in item1.historyBriefInfos" :key="item2.id" :title="item2.eventName"
                                   :name="item2.id">
                   <i class="el-icon-caret-right"></i>{{item2.eventBrief}}
+                  <span style="cursor: pointer; color: #3a8ee6" @click="jumpTOdetial(item2.eventId)">详情</span>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
@@ -77,7 +78,7 @@
           pagenum: 1,
           pagesize: 30
         },
-        total:0,
+        total: 0,
         activeTabNameObj: {},
         continentObj: {
           0: '东亚',
@@ -126,6 +127,11 @@
         this.historyBriefQuery.pagenum = newPage;
         this.getHistoryBriefList();
       },
+      jumpTOdetial(id) {
+        this.$router.push({
+          path: `/historyDetial/${id}`,
+        })
+      }
 
     },
     computed: {},
