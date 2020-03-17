@@ -46,8 +46,20 @@
               <el-collapse accordion>
                 <el-collapse-item v-for="item2 in item1.historyBriefInfos" :key="item2.id" :title="item2.eventName"
                                   :name="item2.id">
-                  <i class="el-icon-caret-right"></i>{{item2.eventBrief}}
-                  <span style="cursor: pointer; color: #3a8ee6" @click="jumpTOdetial(item2.eventId)">详情</span>
+                  <el-row>
+                    <el-col :span="16">
+                      <i class="el-icon-caret-right"></i>{{item2.eventBrief}}
+                    </el-col>
+                    <el-col :span="3">
+                      <span style="cursor: pointer; color: #3a8ee6" @click="jumpTOdetial(item2.eventId)">详情</span>
+                    </el-col>
+                    <el-col :span="4">
+                      <el-button type="warning" @click="editHistoryBrief(item2)" size="mini"
+                                 icon="el-icon-edit"></el-button>
+                      <el-button type="danger" @click="deleteHistoryBrief(item2.id,item2.eventId)" size="mini"
+                                 icon="el-icon-delete"></el-button>
+                    </el-col>
+                  </el-row>
                 </el-collapse-item>
               </el-collapse>
             </el-tab-pane>
@@ -105,7 +117,7 @@
         this.historyBriefList = res.data.list;
         this.total = res.data.total;
         this.historyBriefList.forEach(item => {
-          console.log(item);
+          // console.log(item);
           this.activeTabNameObj[item.year] = item.continents[0].continent + '';
         });
         // console.log(this.activeTabNameObj);
@@ -131,8 +143,21 @@
         this.$router.push({
           path: `/historyDetial/${id}`,
         })
+      },
+      async deleteHistoryBrief(id, eventid) {
+        const {data: res} = await this.$http.post(`historyBrief/delete/${id}/${eventid}`);
+        if (res.meta.status !== 200) {
+          return this.$message.error('删除失败');
+        }
+        this.$message.success('删除成功');
+        this.getHistoryBriefList();
+      },
+      editHistoryBrief(item) {
+        this.$router.push({
+          path: '/historyEdit',
+          query: {item: item},
+        })
       }
-
     },
     computed: {},
     watch: {}

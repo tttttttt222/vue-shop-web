@@ -39,7 +39,7 @@
           return this.$message.error('查询用户信息失效!');
         }
         this.detialEvent = res.data
-        console.log(this.detialEvent);
+        // console.log(this.detialEvent);
       },
       returnBack(){
         this.$router.push({path: `/historyBrief`});

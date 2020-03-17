@@ -12,6 +12,7 @@ import Params from "./components/goods/Params.vue";
 import HistoryBrief from "./components/history/HistoryBrief.vue";
 import HistoryAdd from "./components/history/HistoryAdd.vue";
 import HistoryDetial from "./components/history/HistoryDetial.vue";
+import HistoryEdit from "./components/history/HistoryEdit.vue";
 
 
 Vue.use(Router)
@@ -33,6 +34,7 @@ const router = new Router({
         {path: '/orders', component: Welcome},
         {path: '/historyBrief', component: HistoryBrief},
         {path: '/historyDetial/:id', component: HistoryDetial},
+        {path: '/historyEdit', component: HistoryEdit},
         {path: '/historyBriefAdd', component: HistoryAdd},
       ]
     },
