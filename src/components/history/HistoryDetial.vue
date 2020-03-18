@@ -14,7 +14,7 @@
       <hr>
       <el-row>
         <div class="content ">
-          {{detialEvent.eventContennt}}
+          <p v-html="detialEvent.eventContennt"></p>
         </div>
       </el-row>
     </el-card>

@@ -72,7 +72,8 @@
         </el-form-item>
 
         <el-form-item label="详细内容" prop="eventContennt">
-          <el-input type="textarea" :rows="20" v-model="addRequest.historyEvent.eventContennt"></el-input>
+          <!--          <el-input type="textarea" :rows="20" v-model="addRequest.historyEvent.eventContennt"></el-input>-->
+          <weditor :catchData="catchWeditorData"></weditor>
         </el-form-item>
 
         <el-button type="primary" @click="rollBackStep()">上一步</el-button>
@@ -84,8 +85,13 @@
 </template>
 
 <script>
+  import weditor from "../MyWangeditor.vue";
+
   export default {
     name: "HistoryAdd",
+    components: {
+      weditor,
+    },
     data() {
       return {
         showStepOneForm: true,
@@ -164,12 +170,16 @@
           }
           this.$message.success('添加信息成功!');
           this.active = 0;
+          this.addRequest.historyEvent.eventContennt = '';
           this.showStepOneForm = true;
           this.showStepTwoForm = false;
           this.resetHistoryAddForm();
           this.resetHistoryEventAddForm();
         });
       },
+      catchWeditorData(data) {
+        this.addRequest.historyEvent.eventContennt = data;
+      }
 
 
     }

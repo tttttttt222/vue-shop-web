@@ -51,7 +51,6 @@
         </el-form-item>
 
         <el-button type="primary" @click="afterStep()">下一步</el-button>
-        <!--        <el-button type="info" @click="resetHistoryEditForm()">重置</el-button>-->
       </el-form>
 
       <el-form ref="historyEventEditFormRef" :model="editRequest.historyEvent" :rules="editEventFormRules"
@@ -70,7 +69,8 @@
         </el-form-item>
 
         <el-form-item label="详细内容" prop="eventContennt">
-          <el-input type="textarea" :rows="20" v-model="editRequest.historyEvent.eventContennt"></el-input>
+          <!--          <el-input type="textarea" :rows="20" v-model="editRequest.historyEvent.eventContennt"></el-input>-->
+          <weditor :catchData="catchWeditorData"></weditor>
         </el-form-item>
 
         <el-button type="primary" @click="rollBackStep()">上一步</el-button>
@@ -82,8 +82,13 @@
 </template>
 
 <script>
+  import weditor from "../MyWangeditor.vue";
+
   export default {
     name: "HistoryEdit",
+    components: {
+      weditor,
+    },
     data() {
       return {
         showStepOneForm: true,
@@ -131,12 +136,6 @@
         this.showStepOneForm = true;
         this.showStepTwoForm = false;
       },
-      // resetHistoryEditForm() {
-      //   this.$refs.historyEditBriefFormRef.resetFields();
-      // },
-      // resetHistoryEventEditForm() {
-      //   this.$refs.historyEventEditFormRef.resetFields();
-      // },
       saveHistoryForm() {
         this.$refs.historyEventEditFormRef.validate(async (valid) => {
           if (!valid) return;
@@ -146,8 +145,6 @@
           }
           this.$message.success('更新信息成功!');
           this.returnBack();
-          // this.resetHistoryEditForm();
-          // this.resetHistoryEventEditForm();
         });
       },
       async getHistoryDetialById(id) {
@@ -156,10 +153,12 @@
           return this.$message.error('查询用户信息失效!');
         }
         this.editRequest.historyEvent = res.data;
-        // console.log(this.detialEvent);
       },
       returnBack() {
         this.$router.push({path: `/historyBrief`});
+      },
+      catchWeditorData(data) {
+        this.editRequest.historyEvent.eventContennt = data;
       }
 
 
