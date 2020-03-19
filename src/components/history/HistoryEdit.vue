@@ -17,15 +17,15 @@
         </el-form-item>
 
         <el-form-item label="年" prop="year">
-          <el-input v-model="editRequest.historyBrief.year"></el-input>
+          <el-input v-model.number="editRequest.historyBrief.year"></el-input>
         </el-form-item>
 
         <el-form-item label="月" prop="month">
-          <el-input v-model="editRequest.historyBrief.month"></el-input>
+          <el-input v-model.number="editRequest.historyBrief.month"></el-input>
         </el-form-item>
 
         <el-form-item label="日" prop="date">
-          <el-input v-model="editRequest.historyBrief.date"></el-input>
+          <el-input v-model.number="editRequest.historyBrief.date"></el-input>
         </el-form-item>
 
         <el-form-item label="国家" prop="contry">
@@ -109,7 +109,9 @@
         },
         editBriefFormRules: {
           eventName: [{required: true, message: '请输入事件名称', trigger: 'blur'}],
-          year: [{required: true, message: '请输入年', trigger: 'blur'}],
+          year: [{required: true, message: '请输入年', trigger: 'blur'}, {type: 'number', message: '年份必须为数字值'}],
+          month: [{type: 'number', message: '月份必须为数字值'}],
+          date: [{type: 'number', message: '日期必须为数字值'}],
           continent: [{required: true, message: '请输选择地点', trigger: 'blur'}],
         },
         editEventFormRules: {

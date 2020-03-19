@@ -24,15 +24,15 @@
         </el-form-item>
 
         <el-form-item label="年" prop="year">
-          <el-input v-model="addRequest.historyBrief.year"></el-input>
+          <el-input v-model.number="addRequest.historyBrief.year"></el-input>
         </el-form-item>
 
         <el-form-item label="月" prop="month">
-          <el-input v-model="addRequest.historyBrief.month"></el-input>
+          <el-input v-model.number="addRequest.historyBrief.month"></el-input>
         </el-form-item>
 
         <el-form-item label="日" prop="date">
-          <el-input v-model="addRequest.historyBrief.date"></el-input>
+          <el-input v-model.number="addRequest.historyBrief.date"></el-input>
         </el-form-item>
 
         <el-form-item label="国家" prop="contry">
@@ -73,7 +73,7 @@
 
         <el-form-item label="详细内容" prop="eventContennt">
           <!--          <el-input type="textarea" :rows="20" v-model="addRequest.historyEvent.eventContennt"></el-input>-->
-          <weditor :catchData="catchWeditorData"></weditor>
+          <weditor ref="weditorRef" :catchData="catchWeditorData"></weditor>
         </el-form-item>
 
         <el-button type="primary" @click="rollBackStep()">上一步</el-button>
@@ -128,7 +128,9 @@
         },
         addBriefFormRules: {
           eventName: [{required: true, message: '请输入事件名称', trigger: 'blur'}],
-          year: [{required: true, message: '请输入年', trigger: 'blur'}],
+          year: [{required: true, message: '请输入年', trigger: 'blur'}, {type: 'number', message: '年份必须为数字值'}],
+          month: [{type: 'number', message: '月份必须为数字值'}],
+          date: [{type: 'number', message: '日期必须为数字值'}],
           continent: [{required: true, message: '请输选择地点', trigger: 'blur'}],
         },
         addEventFormRules: {
@@ -171,6 +173,7 @@
           this.$message.success('添加信息成功!');
           this.active = 0;
           this.addRequest.historyEvent.eventContennt = '';
+          this.$refs.weditorRef.editorContent = '';
           this.showStepOneForm = true;
           this.showStepTwoForm = false;
           this.resetHistoryAddForm();

@@ -38,6 +38,7 @@ import {
   CollapseItem,
   Steps,
   Step,
+  Backtop
 } from 'element-ui'
 
 
@@ -77,5 +78,6 @@ Vue.use(Collapse)
 Vue.use(CollapseItem)
 Vue.use(Steps)
 Vue.use(Step)
+Vue.use(Backtop)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
