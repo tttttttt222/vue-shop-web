@@ -129,8 +129,8 @@
         addBriefFormRules: {
           eventName: [{required: true, message: '请输入事件名称', trigger: 'blur'}],
           year: [{required: true, message: '请输入年', trigger: 'blur'}, {type: 'number', message: '年份必须为数字值'}],
-          month: [{type: 'number', message: '月份必须为数字值'}],
-          date: [{type: 'number', message: '日期必须为数字值'}],
+          // month: [{type: 'number', message: '月份必须为数字值'}],
+          // date: [{type: 'number', message: '日期必须为数字值'}],
           continent: [{required: true, message: '请输选择地点', trigger: 'blur'}],
         },
         addEventFormRules: {
@@ -173,7 +173,7 @@
           this.$message.success('添加信息成功!');
           this.active = 0;
           this.addRequest.historyEvent.eventContennt = '';
-          this.$refs.weditorRef.editorContent = '';
+          this.$refs.weditorRef.clearEditorHtml();
           this.showStepOneForm = true;
           this.showStepTwoForm = false;
           this.resetHistoryAddForm();

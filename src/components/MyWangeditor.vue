@@ -47,6 +47,12 @@
         'redo' // 重复
       ];
       this.editor.create(); // 创建富文本实例
+    },
+    methods:{
+      clearEditorHtml(){
+        this.editorContent = '';
+        this.editor.txt.html('');
+      }
     }
   }
 </script>
