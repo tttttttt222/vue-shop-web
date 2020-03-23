@@ -48,6 +48,8 @@
         },
         activeName: 'many',
         paramslist:[],
+        manyTableData:[],
+        onlyTableData:[]
       }
     },
     created() {
@@ -76,8 +78,11 @@
         if (res.meta.status !== 200) {
           return this.$message.error('获取分类属性失败');
         }
-        this.paramslist =res.data;
-        console.log(this.paramslist)
+        if(this.activeName === 'many'){
+          this.manyTableData = res.data
+        }else{
+          this.onlyTableData = res.data
+        }
       }
     },
     computed: {
